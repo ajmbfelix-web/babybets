@@ -24,12 +24,14 @@ export default function HostPage() {
   const [birth, setBirth] = useState({ date: '', hour: '12', ampm: 'AM', minute: '0', sex: '', lbs: '', oz: '' })
   const [submitting, setSubmitting] = useState(false)
 
-  useEffect(() => {
+useEffect(() => {
     async function load() {
       try {
         const p = await getPoolById(poolId)
         setPool(p)
-        const b = await getBetsForPool(poolId, true)
+        // Change the 'true' to 'false' to see all bets, 
+        // or check your getBetsForPool function definition.
+        const b = await getBetsForPool(poolId, false) 
         setBets(b)
       } finally {
         setLoading(false)
