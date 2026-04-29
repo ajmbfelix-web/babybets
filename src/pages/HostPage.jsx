@@ -27,29 +27,27 @@ export default function HostPage() {
 useEffect(() => {
     async function load() {
       try {
-        const { data: p } = await supabase
-          .from('pools')
-          .select('*')
-          .eq('id', poolId)
-          .single()
-        setPool(p)
+        // 1. Use the reliable helper for the pool
+        const p = await getPoolById(poolId);
+        setPool(p);
 
-        // Directly fetch all bets for this pool, ignoring any "onlyPaid" logic
-        const { data: b } = await supabase
+        // 2. Use a direct, unfiltered call for the bets
+        const { data: b, error: betError } = await supabase
           .from('bets')
           .select('*')
-          .eq('pool_id', poolId)
-          .order('created_at', { ascending: false })
+          .eq('pool_id', poolId);
+
+        if (betError) console.error("Bet fetch error:", betError);
+        setBets(b || []);
         
-        setBets(b || [])
       } catch (err) {
-        console.error("Error loading dashboard:", err)
+        console.error("Dashboard load error:", err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
-    if (poolId) load()
-  }, [poolId])
+    if (poolId) load();
+  }, [poolId]);
 
   const shareUrl = `${window.location.origin}/pool/${slug}`
   const guestUrl = `${window.location.origin}/bet/${slug}`
