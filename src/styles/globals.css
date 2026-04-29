@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #faf7f0;
+    color: #253825;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-sage-600 text-cream-50 font-sans font-medium px-6 py-3 rounded-2xl
+           transition-all duration-200 hover:bg-sage-700 active:scale-95
+           shadow-soft hover:shadow-card disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-cream-200 text-sage-800 font-sans font-medium px-6 py-3 rounded-2xl
+           transition-all duration-200 hover:bg-cream-300 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply text-sage-600 font-sans font-medium px-4 py-2 rounded-xl
+           transition-all duration-200 hover:bg-sage-50 active:scale-95;
+  }
+
+  .input-field {
+    @apply w-full bg-white border border-cream-300 rounded-2xl px-4 py-3
+           font-sans text-sage-900 placeholder-sage-300
+           focus:outline-none focus:ring-2 focus:ring-sage-400 focus:border-transparent
+           transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-3xl shadow-card p-6;
+  }
+
+  .card-cream {
+    @apply bg-cream-100 rounded-3xl p-6;
+  }
+
+  .label-text {
+    @apply text-sm font-medium text-sage-600 font-sans mb-1.5 block;
+  }
+
+  .section-title {
+    @apply font-serif text-2xl text-sage-900 leading-tight;
+  }
+
+  .prize-pill {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium font-sans;
+  }
+
+  /* Calendar overrides */
+  .react-calendar {
+    @apply w-full bg-transparent border-0 font-sans !important;
+  }
+  .react-calendar__navigation {
+    @apply flex items-center justify-between mb-4 !important;
+  }
+  .react-calendar__navigation button {
+    @apply text-sage-700 font-medium hover:bg-sage-100 rounded-xl px-2 py-1 transition-colors !important;
+    min-width: auto !important;
+  }
+  .react-calendar__month-view__weekdays {
+    @apply text-center text-xs text-sage-400 font-medium mb-2 !important;
+  }
+  .react-calendar__month-view__weekdays__weekday {
+    @apply p-1 !important;
+  }
+  .react-calendar__month-view__weekdays__weekday abbr {
+    text-decoration: none !important;
+  }
+  .react-calendar__tile {
+    @apply rounded-xl text-sm font-sans text-sage-700 py-2 hover:bg-sage-100 transition-colors !important;
+  }
+  .react-calendar__tile--active,
+  .react-calendar__tile--active:hover {
+    @apply bg-sage-600 text-white !important;
+  }
+  .react-calendar__tile--now {
+    @apply bg-cream-200 !important;
+  }
+  .react-calendar__tile--now.react-calendar__tile--active {
+    @apply bg-sage-600 text-white !important;
+  }
+  .react-calendar__tile:disabled {
+    @apply opacity-30 cursor-not-allowed bg-transparent !important;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #a8c2a8; border-radius: 3px; }
+
+/* Grain texture overlay */
+.grain::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
