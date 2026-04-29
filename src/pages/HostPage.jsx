@@ -27,12 +27,23 @@ export default function HostPage() {
 useEffect(() => {
     async function load() {
       try {
-        const p = await getPoolById(poolId)
+        const { data: p } = await supabase
+          .from('pools')
+          .select('*')
+          .eq('id', poolId)
+          .single()
         setPool(p)
-        // Change the 'true' to 'false' to see all bets, 
-        // or check your getBetsForPool function definition.
-        const b = await getBetsForPool(poolId, false) 
-        setBets(b)
+
+        // Directly fetch all bets for this pool, ignoring any "onlyPaid" logic
+        const { data: b } = await supabase
+          .from('bets')
+          .select('*')
+          .eq('pool_id', poolId)
+          .order('created_at', { ascending: false })
+        
+        setBets(b || [])
+      } catch (err) {
+        console.error("Error loading dashboard:", err)
       } finally {
         setLoading(false)
       }
