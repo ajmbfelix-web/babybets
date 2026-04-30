@@ -4,7 +4,7 @@ import { Share2, Copy, Check, ExternalLink, Trophy, Baby, Clock } from 'lucide-r
 import { Screen, Logo, Card, Button, Spinner, EmptyState, TrustModal } from '../components/UI'
 import { LivePot } from '../components/LivePot'
 import { getBetsForPool, getPoolById, submitBirthStats, updatePool } from '../lib/supabase'
-import { rankBets, calcPayouts, formatCurrency, formatDate, formatTime, ozToDisplay } from '../lib/finance'
+import { supabase, getBetsForPool, getPoolById, submitBirthStats, updatePool } from '../lib/supabase'
 import clsx from 'clsx'
 
 export default function HostPage() {
@@ -30,25 +30,29 @@ useEffect(() => {
       setLoading(true);
       
       try {
-        // 1. Fetch the Pool
-        const { data: p } = await supabase
+        // 1. Fetch the Pool details (Name, Due Date, etc.)
+        const { data: p, error: pError } = await supabase
           .from('pools')
           .select('*')
           .eq('id', poolId)
           .single();
+        
+        if (pError) throw pError;
         setPool(p);
 
         // 2. Fetch ALL bets for this pool (Brute Force)
-        const { data: b } = await supabase
+        const { data: b, error: bError } = await supabase
           .from('bets')
           .select('*')
           .eq('pool_id', poolId);
 
-        console.log("DATABASE CHECK - Bets found:", b);
+        if (bError) throw bError;
+        
+        console.log("Success! Bets found:", b);
         setBets(b || []);
         
       } catch (err) {
-        console.error("Critical Load Error:", err);
+        console.error("Dashboard Load Error:", err);
       } finally {
         setLoading(false);
       }
