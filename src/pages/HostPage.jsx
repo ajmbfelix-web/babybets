@@ -26,27 +26,34 @@ export default function HostPage() {
 
 useEffect(() => {
     async function load() {
+      if (!poolId) return;
+      setLoading(true);
+      
       try {
-        // 1. You MUST fetch the pool first so the UI knows the baby's name/details
-        const p = await getPoolById(poolId);
+        // 1. Fetch the Pool
+        const { data: p } = await supabase
+          .from('pools')
+          .select('*')
+          .eq('id', poolId)
+          .single();
         setPool(p);
 
-        // 2. Then fetch the bets
-        const { data: b, error: betError } = await supabase
+        // 2. Fetch ALL bets for this pool (Brute Force)
+        const { data: b } = await supabase
           .from('bets')
           .select('*')
           .eq('pool_id', poolId);
 
-        if (betError) console.error("Bet fetch error:", betError);
+        console.log("DATABASE CHECK - Bets found:", b);
         setBets(b || []);
         
       } catch (err) {
-        console.error("Dashboard load error:", err);
+        console.error("Critical Load Error:", err);
       } finally {
         setLoading(false);
       }
     }
-    if (poolId) load();
+    load();
   }, [poolId]);
 
   const shareUrl = `${window.location.origin}/pool/${slug}`
