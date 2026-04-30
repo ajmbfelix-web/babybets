@@ -3,7 +3,6 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { Share2, Copy, Check, ExternalLink, Trophy, Baby, Clock } from 'lucide-react'
 import { Screen, Logo, Card, Button, Spinner, EmptyState, TrustModal } from '../components/UI'
 import { LivePot } from '../components/LivePot'
-import { getBetsForPool, getPoolById, submitBirthStats, updatePool } from '../lib/supabase'
 import { supabase, getBetsForPool, getPoolById, submitBirthStats, updatePool } from '../lib/supabase'
 import clsx from 'clsx'
 
