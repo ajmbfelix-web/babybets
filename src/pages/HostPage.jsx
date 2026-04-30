@@ -27,11 +27,11 @@ export default function HostPage() {
 useEffect(() => {
     async function load() {
       try {
-        // 1. Use the reliable helper for the pool
+        // 1. You MUST fetch the pool first so the UI knows the baby's name/details
         const p = await getPoolById(poolId);
         setPool(p);
 
-        // 2. Use a direct, unfiltered call for the bets
+        // 2. Then fetch the bets
         const { data: b, error: betError } = await supabase
           .from('bets')
           .select('*')
