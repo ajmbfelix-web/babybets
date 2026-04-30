@@ -5,7 +5,7 @@ import { Screen, Logo, Card, Button, Spinner, EmptyState, TrustModal } from '../
 import { LivePot } from '../components/LivePot'
 import { supabase, getBetsForPool, getPoolById, submitBirthStats, updatePool } from '../lib/supabase'
 import clsx from 'clsx'
-
+import { rankBets, calcPayouts, formatCurrency, formatDate, formatTime, ozToDisplay } from '../lib/finance'
 export default function HostPage() {
   const { slug } = useParams()
   const [searchParams] = useSearchParams()
